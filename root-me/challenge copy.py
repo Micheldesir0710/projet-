@@ -1,5 +1,5 @@
 import socket
-import math
+import base64
 
 def solve_challenge():
     # Paramètres de connexion
@@ -16,18 +16,20 @@ def solve_challenge():
         print(data)
         
         answer = data.strip().split()
-        word = answer[-6]
-        word = word.decode()
-        print(word)
+        print(answer)
+        word = answer[-6].replace("'",'')
+        word_bytes = base64.b64decode(word)
+        word_string = word_bytes.decode('utf-8')
+        print(word_string)
 
         
 
         # Envoi du résultat au serveur
-        #s.sendall(f"{result_rounded}\n".encode('utf-8'))
+        s.sendall(f"{word_string}\n".encode('utf-8'))
         
         # Réception de la réponse finale
-        #final_response = s.recv(1024).decode('utf-8')
-        #print("Réponse finale:", final_response)
+        final_response = s.recv(1024).decode('utf-8')
+        print("Réponse finale:", final_response)
         #s.close()
 
 if __name__ == "__main__":
